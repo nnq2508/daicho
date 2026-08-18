@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+# Renaming the project: change this name, the console script below, the
+# package directory, and APP_NAME in memledger/config.py. Nothing else
+# hardcodes the name.
+name = "memledger"
+dynamic = ["version"]
+description = "Append-only memory ledger for long-lived assistants: event log, entity registry, staged LLM extraction, bigram full-text search."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "memledger authors" }]
+keywords = ["memory", "agent", "event-sourcing", "fts5", "japanese", "llm"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Text Processing :: Indexing",
+]
+# No runtime dependencies on purpose: the standard library covers the event
+# log (json, fcntl), the index (sqlite3 with FTS5) and the LLM boundary
+# (subprocess).
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+memledger = "memledger.cli:main"
+
+[project.urls]
+Source = "https://example.com/memledger"
+
+[tool.setuptools]
+packages = ["memledger"]
+
+[tool.setuptools.dynamic]
+version = { attr = "memledger.__version__" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,22 @@
+[
+  {
+    "role": "user",
+    "content": "Hanako Yamada replied about the cleanup. She wants to move the meeting point to the east plaza of the Minato Civic Center, same as you suggested.",
+    "timestamp": "2031-05-09T20:03:00+09:00"
+  },
+  {
+    "role": "assistant",
+    "content": "Good. I will note the east plaza as the confirmed meeting point. Do you want the reminder to go out the evening before, or the same morning?",
+    "timestamp": "2031-05-09T20:03:35+09:00"
+  },
+  {
+    "role": "user",
+    "content": "前の晩でいい。あと、受付のWi-Fiが弱いって話があったから Pico Router 7 を持っていく。",
+    "timestamp": "2031-05-09T20:05:20+09:00"
+  },
+  {
+    "role": "assistant",
+    "content": "Pico Router 7 を持ち物リストに追加しました。前夜のリマインドで一緒に出します。",
+    "timestamp": "2031-05-09T20:06:02+09:00"
+  }
+]
