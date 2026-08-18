@@ -1,5 +1,5 @@
 <!-- English version: README.md -->
-# memledger
+# daicho
 
 長期間動き続けるアシスタントのための、追記専用の記憶台帳。
 
@@ -12,19 +12,19 @@
 `json`、索引は`sqlite3`のFTS5、モデル呼び出しは`subprocess`）。
 
 ```bash
-pip install memledger
-memledger init
-memledger ingest
-memledger --llm-cmd "your-model-cli --quiet" extract
-memledger review list
-memledger reindex
-memledger search "会場はどこにするって決めたっけ"
+pip install daicho
+daicho init
+daicho ingest
+daicho --llm-cmd "your-model-cli --quiet" extract
+daicho review list
+daicho reindex
+daicho search "会場はどこにするって決めたっけ"
 ```
 
 ライブラリとして使う場合:
 
 ```python
-from memledger import Config, ingest, extract, search
+from daicho import Config, ingest, extract, search
 
 cfg = Config.load("/srv/memory").ensure_dirs()
 ingest.run(cfg)                      # セッション -> エピソード
@@ -49,7 +49,7 @@ hits = search.search(cfg, "秋の清掃の集合場所")
 
 ```bash
 rm -rf registry/ index/
-memledger rebuild-registry && memledger reindex
+daicho rebuild-registry && daicho reindex
 ```
 
 導出物にしか存在しない事実を作ると、DBの破損がそのまま記憶の喪失になる。
@@ -85,13 +85,13 @@ memledger rebuild-registry && memledger reindex
 が見当たらない日付つき記述など。
 
 ```
-$ memledger review list
+$ daicho review list
 prop_1762…_01b776de  entity 山田 (person) -- collides with the existing entity '山田花子'
 prop_1762…_3d07c83e  commitment 9月までに許可証を更新する -- dated statement with no matching reminder
 
-$ memledger review approve prop_1762…_01b776de       # 別人として登録
-$ memledger review approve prop_1762…_01b776de --merge-into person:yamada_hanako
-$ memledger review reject  prop_1762…_3d07c83e --note "カレンダーに入っている"
+$ daicho review approve prop_1762…_01b776de       # 別人として登録
+$ daicho review approve prop_1762…_01b776de --merge-into person:yamada_hanako
+$ daicho review reject  prop_1762…_3d07c83e --note "カレンダーに入っている"
 ```
 
 別エンティティとして承認すると、双方向に `confusable_with` が記録される。
@@ -119,7 +119,7 @@ $ memledger review reject  prop_1762…_3d07c83e --note "カレンダーに入�
 
 ## 検索
 
-`memledger search` は記憶への**唯一の読み出し経路**として使う想定。取り出し
+`daicho search` は記憶への**唯一の読み出し経路**として使う想定。取り出し
 経路が複数あって少しずつロジックが違うと、答えが「たまたまどの経路を通ったか」
 で変わる。
 
@@ -164,7 +164,7 @@ $ memledger review reject  prop_1762…_3d07c83e --note "カレンダーに入�
 ## ディレクトリ構成
 
 ```
-$MEMLEDGER_HOME/
+$DAICHO_HOME/
   events/YYYY-MM.jsonl      追記専用ログ            <- 正本
   sessions/*.json           会話ログ (+ archive/YYYY-MM/*.json.gz)
   notes/*.md                Markdownノート
@@ -173,7 +173,7 @@ $MEMLEDGER_HOME/
   config.json               任意の設定上書き
 ```
 
-ホームディレクトリは `Config.load(path)` → `$MEMLEDGER_HOME` → `~/.memledger`
+ホームディレクトリは `Config.load(path)` → `$DAICHO_HOME` → `~/.daicho`
 の順で決まる。マシンやユーザに固定された場所は無い。
 
 ## 設定
@@ -182,8 +182,8 @@ $MEMLEDGER_HOME/
 
 | キー | 既定 | 意味 |
 |---|---|---|
-| `llm_cmd` | `$MEMLEDGER_LLM_CMD` | stdinにプロンプト、stdoutにJSONを出すシェルコマンド |
-| `notify_cmd` | `$MEMLEDGER_NOTIFY_CMD` | 実行を諦めたときにstdin経由でメッセージを渡す先 |
+| `llm_cmd` | `$DAICHO_LLM_CMD` | stdinにプロンプト、stdoutにJSONを出すシェルコマンド |
+| `notify_cmd` | `$DAICHO_NOTIFY_CMD` | 実行を諦めたときにstdin経由でメッセージを渡す先 |
 | `auto_confirm_min_episodes` | 3 | 自動確定に必要な異なるエピソード数 |
 | `max_proposals_per_run` | 10 | 1実行の提案上限（系統ごと）。超過分は持ち越し |
 | `max_consecutive_failures` | 5 | 通知して非ゼロ終了するまでの連続失敗バッチ数 |
@@ -200,11 +200,11 @@ $MEMLEDGER_HOME/
 これを満たせば何でも使える。特定ベンダーのSDKはどこからも読み込まない。
 
 ```bash
-memledger --llm-cmd "claude -p --model sonnet" extract
-memledger --llm-cmd "llm -m gpt-4o-mini" extract
-memledger --llm-cmd "ollama run qwen2.5" extract
-memledger --llm-cmd "python my_wrapper.py" extract
-export MEMLEDGER_LLM_CMD="curl -s -XPOST … | jq -r .output"
+daicho --llm-cmd "claude -p --model sonnet" extract
+daicho --llm-cmd "llm -m gpt-4o-mini" extract
+daicho --llm-cmd "ollama run qwen2.5" extract
+daicho --llm-cmd "python my_wrapper.py" extract
+export DAICHO_LLM_CMD="curl -s -XPOST … | jq -r .output"
 ```
 
 stdoutの最初のJSONオブジェクトだけを読むので、進捗行を出すラッパーでも問題ない。
@@ -217,8 +217,8 @@ stdoutの最初のJSONオブジェクトだけを読むので、進捗行を出�
 失敗しても、記帳そのものは止まってはいけない。
 
 ```cron
-*/15 * * * *  memledger ingest              >> /var/log/memledger.log 2>&1
-35 3    * * *  memledger extract && memledger reindex
+*/15 * * * *  daicho ingest              >> /var/log/daicho.log 2>&1
+35 3    * * *  daicho extract && daicho reindex
 ```
 
 ## テスト

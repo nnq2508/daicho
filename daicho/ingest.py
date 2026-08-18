@@ -1,7 +1,7 @@
 """Session logs -> ``episode_added`` events.
 
 Deterministic and mechanical: **this module never calls an LLM**. Judgement and
-extraction live in :mod:`memledger.extract`, in a separate process, so that a
+extraction live in :mod:`daicho.extract`, in a separate process, so that a
 failing extractor cannot stop plain recording.
 
 Session format
@@ -23,7 +23,7 @@ from ``sessions/x.json`` to ``sessions/archive/YYYY-MM/x.json.gz``, and a
 path-based identity would re-ingest everything the day that happens.
 
 The incremental cursor is recomputed from the event log itself on every run
-(see :func:`memledger.events.session_cursors`); there is no cursor file.
+(see :func:`daicho.events.session_cursors`); there is no cursor file.
 
 Durability canaries (checked every run; a hit is a non-zero exit, never a
 silent pass):

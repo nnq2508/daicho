@@ -4,15 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 # Renaming the project: change this name, the console script below, the
-# package directory, and APP_NAME in memledger/config.py. Nothing else
+# package directory, and APP_NAME in daicho/config.py. Nothing else
 # hardcodes the name.
-name = "memledger"
+name = "daicho"
 dynamic = ["version"]
 description = "Append-only memory ledger for long-lived assistants: event log, entity registry, staged LLM extraction, bigram full-text search."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "Apache-2.0" }
-authors = [{ name = "memledger authors" }]
+authors = [{ name = "daicho authors" }]
 keywords = ["memory", "agent", "event-sourcing", "fts5", "japanese", "llm"]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -32,16 +32,16 @@ dependencies = []
 test = ["pytest>=7"]
 
 [project.scripts]
-memledger = "memledger.cli:main"
+daicho = "daicho.cli:main"
 
 [project.urls]
-Source = "https://example.com/memledger"
+Source = "https://example.com/daicho"
 
 [tool.setuptools]
-packages = ["memledger"]
+packages = ["daicho"]
 
 [tool.setuptools.dynamic]
-version = { attr = "memledger.__version__" }
+version = { attr = "daicho.__version__" }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

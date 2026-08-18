@@ -2,8 +2,8 @@
 
 Everything the library writes lives under a single ``base_dir`` (the "home").
 Nothing is hardcoded to a particular machine or user: the home is taken from
-(in order) an explicit argument, the ``MEMLEDGER_HOME`` environment variable,
-or ``~/.memledger``.
+(in order) an explicit argument, the ``DAICHO_HOME`` environment variable,
+or ``~/.daicho``.
 
 The tool name appears exactly once here (:data:`APP_NAME`); the environment
 variable names, the default home directory and the default writer identifiers
@@ -27,7 +27,7 @@ import os
 from dataclasses import dataclass, field, fields
 from pathlib import Path
 
-APP_NAME = "memledger"
+APP_NAME = "daicho"
 
 ENV_HOME = f"{APP_NAME.upper()}_HOME"
 ENV_LLM_CMD = f"{APP_NAME.upper()}_LLM_CMD"

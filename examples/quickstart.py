@@ -20,7 +20,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from memledger import Config, extract, ingest, registry, review, search  # noqa: E402
+from daicho import Config, extract, ingest, registry, review, search  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 SAMPLES = HERE / "sample_sessions"
@@ -54,7 +54,7 @@ def banner(text: str) -> None:
 
 def main() -> int:
     keep = len(sys.argv) > 1
-    home = Path(sys.argv[1]) if keep else Path(tempfile.mkdtemp(prefix="memledger-demo-"))
+    home = Path(sys.argv[1]) if keep else Path(tempfile.mkdtemp(prefix="daicho-demo-"))
     cfg = Config.load(home, llm_cmd=f"{sys.executable} {MOCK_LLM}").ensure_dirs()
     print(f"home: {cfg.base_dir}")
 

@@ -1,12 +1,12 @@
 """Command line interface.
 
-    memledger init                 create the home directory layout
-    memledger ingest               record new session turns as episodes
-    memledger extract              run the LLM harvest (entities, commitments)
-    memledger review list|show|approve|reject
-    memledger search "..."         query the index
-    memledger reindex              rebuild the full-text index
-    memledger rebuild-registry     regenerate the ledger from the event log
+    daicho init                 create the home directory layout
+    daicho ingest               record new session turns as episodes
+    daicho extract              run the LLM harvest (entities, commitments)
+    daicho review list|show|approve|reject
+    daicho search "..."         query the index
+    daicho reindex              rebuild the full-text index
+    daicho rebuild-registry     regenerate the ledger from the event log
 
 Global options ``--home`` and ``--llm-cmd`` override the environment.
 """

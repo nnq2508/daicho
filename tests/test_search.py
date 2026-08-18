@@ -8,7 +8,7 @@ import sqlite3
 import pytest
 from conftest import seed_registry, write_session
 
-from memledger import search
+from daicho import search
 
 
 def note(cfg, name: str, body: str) -> None:

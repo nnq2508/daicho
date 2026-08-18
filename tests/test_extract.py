@@ -6,7 +6,7 @@ import io
 import pytest
 from conftest import add_episode, broken_llm, mock_llm, seed_registry, write_session
 
-from memledger import events, extract, registry, review
+from daicho import events, extract, registry, review
 
 
 def candidate(name: str, entity_type: str = "person", confidence: str = "high",

@@ -4,7 +4,7 @@ from __future__ import annotations
 import pytest
 from conftest import seed_registry
 
-from memledger import events, registry, review
+from daicho import events, registry, review
 
 
 def entity_proposal(cfg, name="山田", collides_with=None, defer=False) -> str:

@@ -5,7 +5,7 @@ import json
 
 import pytest
 
-from memledger import events
+from daicho import events
 
 
 def test_writer_is_mandatory(cfg):

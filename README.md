@@ -1,5 +1,5 @@
 <!-- Japanese version: README.ja.md -->
-# memledger
+# daicho
 
 An append-only memory ledger for long-lived assistants.
 
@@ -13,19 +13,19 @@ No dependencies. Python 3.10+ and the standard library: `json` for the log,
 `sqlite3` (FTS5) for the index, `subprocess` for the model boundary.
 
 ```bash
-pip install memledger
-memledger init
-memledger ingest
-memledger --llm-cmd "your-model-cli --quiet" extract
-memledger review list
-memledger reindex
-memledger search "when did we agree on the venue?"
+pip install daicho
+daicho init
+daicho ingest
+daicho --llm-cmd "your-model-cli --quiet" extract
+daicho review list
+daicho reindex
+daicho search "when did we agree on the venue?"
 ```
 
 Or as a library:
 
 ```python
-from memledger import Config, ingest, extract, search
+from daicho import Config, ingest, extract, search
 
 cfg = Config.load("/srv/memory").ensure_dirs()
 ingest.run(cfg)                      # sessions -> episodes
@@ -50,7 +50,7 @@ registry and the search index are **derived**: delete them and rebuild.
 
 ```bash
 rm -rf registry/ index/
-memledger rebuild-registry && memledger reindex
+daicho rebuild-registry && daicho reindex
 ```
 
 If a fact exists only in a derived store, a corrupted database becomes lost
@@ -88,13 +88,13 @@ Everything else — a name overlapping an existing one, a low-confidence
 extraction, a dated commitment with no matching reminder — becomes a proposal:
 
 ```
-$ memledger review list
+$ daicho review list
 prop_1762…_01b776de  entity 山田 (person) -- collides with the existing entity '山田花子'
 prop_1762…_3d07c83e  commitment renew the permit before September -- dated statement with no matching reminder
 
-$ memledger review approve prop_1762…_01b776de       # a different person
-$ memledger review approve prop_1762…_01b776de --merge-into person:yamada_hanako
-$ memledger review reject  prop_1762…_3d07c83e --note "already on the calendar"
+$ daicho review approve prop_1762…_01b776de       # a different person
+$ daicho review approve prop_1762…_01b776de --merge-into person:yamada_hanako
+$ daicho review reject  prop_1762…_3d07c83e --note "already on the calendar"
 ```
 
 Approving as a separate entity records the pair in `confusable_with`, in both
@@ -124,7 +124,7 @@ system keeps looking alive while it stops learning.
 
 ## Search
 
-`memledger search` is intended to be the *only* read path into memory. Multiple
+`daicho search` is intended to be the *only* read path into memory. Multiple
 retrieval routes with slightly different logic diverge, and then answers depend
 on which route happened to run.
 
@@ -176,7 +176,7 @@ Notes are plain Markdown under `notes/`. Extra corpora are added through
 ## Layout
 
 ```
-$MEMLEDGER_HOME/
+$DAICHO_HOME/
   events/YYYY-MM.jsonl      append-only log        <- source of truth
   sessions/*.json           conversation logs (+ archive/YYYY-MM/*.json.gz)
   notes/*.md                markdown notes
@@ -185,8 +185,8 @@ $MEMLEDGER_HOME/
   config.json               optional overrides
 ```
 
-The home directory comes from `Config.load(path)`, `$MEMLEDGER_HOME`, or
-`~/.memledger`, in that order. Nothing is hardcoded to a machine or a user.
+The home directory comes from `Config.load(path)`, `$DAICHO_HOME`, or
+`~/.daicho`, in that order. Nothing is hardcoded to a machine or a user.
 
 ## Configuration
 
@@ -194,8 +194,8 @@ The home directory comes from `Config.load(path)`, `$MEMLEDGER_HOME`, or
 
 | key | default | meaning |
 |---|---|---|
-| `llm_cmd` | `$MEMLEDGER_LLM_CMD` | shell command: prompt on stdin, JSON on stdout |
-| `notify_cmd` | `$MEMLEDGER_NOTIFY_CMD` | called with the message on stdin when a run gives up |
+| `llm_cmd` | `$DAICHO_LLM_CMD` | shell command: prompt on stdin, JSON on stdout |
+| `notify_cmd` | `$DAICHO_NOTIFY_CMD` | called with the message on stdin when a run gives up |
 | `auto_confirm_min_episodes` | 3 | distinct episodes required for automatic promotion |
 | `max_proposals_per_run` | 10 | review-queue budget per stream; the rest is deferred |
 | `max_consecutive_failures` | 5 | failed batches before notifying and exiting non-zero |
@@ -212,11 +212,11 @@ The model boundary is one shell command: **prompt on stdin, JSON on stdout**.
 Anything honouring that works, and no vendor SDK is imported anywhere.
 
 ```bash
-memledger --llm-cmd "claude -p --model sonnet" extract
-memledger --llm-cmd "llm -m gpt-4o-mini" extract
-memledger --llm-cmd "ollama run qwen2.5" extract
-memledger --llm-cmd "python my_wrapper.py" extract
-export MEMLEDGER_LLM_CMD="curl -s -XPOST … | jq -r .output"
+daicho --llm-cmd "claude -p --model sonnet" extract
+daicho --llm-cmd "llm -m gpt-4o-mini" extract
+daicho --llm-cmd "ollama run qwen2.5" extract
+daicho --llm-cmd "python my_wrapper.py" extract
+export DAICHO_LLM_CMD="curl -s -XPOST … | jq -r .output"
 ```
 
 Only the first JSON object in stdout is read, so wrappers that print progress
@@ -229,8 +229,8 @@ lines are fine. See `examples/mock_llm.py` for a dependency-free stub.
 separate units: a failing extractor must never stop plain recording.
 
 ```cron
-*/15 * * * *  memledger ingest              >> /var/log/memledger.log 2>&1
-35 3    * * *  memledger extract && memledger reindex
+*/15 * * * *  daicho ingest              >> /var/log/daicho.log 2>&1
+35 3    * * *  daicho extract && daicho reindex
 ```
 
 ## Tests

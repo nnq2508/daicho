@@ -7,7 +7,7 @@ import json
 
 from conftest import write_session
 
-from memledger import events, ingest
+from daicho import events, ingest
 
 
 def test_records_one_episode_per_session(cfg):

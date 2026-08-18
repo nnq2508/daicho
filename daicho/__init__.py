@@ -12,7 +12,7 @@ The design rests on four rules:
 
 Typical use::
 
-    from memledger import Config, ingest, extract, search
+    from daicho import Config, ingest, extract, search
 
     cfg = Config.load("/srv/memory").ensure_dirs()
     ingest.run(cfg)
@@ -40,7 +40,7 @@ __all__ = [
 
 
 def __getattr__(name: str):
-    """Import submodules lazily so ``import memledger`` stays cheap."""
+    """Import submodules lazily so ``import daicho`` stays cheap."""
     if name in __all__:
         import importlib
 

@@ -10,9 +10,9 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from memledger import Config  # noqa: E402
-from memledger.ingest import compute_episode_id  # noqa: E402
-from memledger import events  # noqa: E402
+from daicho import Config  # noqa: E402
+from daicho.ingest import compute_episode_id  # noqa: E402
+from daicho import events  # noqa: E402
 
 
 @pytest.fixture
@@ -90,7 +90,7 @@ def broken_llm(tmp_path: Path, name: str = "broken_llm.py") -> str:
 
 def seed_registry(cfg: Config, canonical: str, aliases: list[str],
                   entity_type: str = "person") -> None:
-    from memledger import registry
+    from daicho import registry
 
     ledger = registry.load(cfg.registry_dir)
     ledger.add(entity_type=entity_type, canonical_name=canonical, aliases=aliases,
